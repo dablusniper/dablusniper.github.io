@@ -17,12 +17,15 @@
         <div class="wrapper">
             <button onclick="record(true)">Yes</button>
             <button onclick="record(false)">No</button>
+            <p id="no">  </p>
+            <button id="restart" onclick="restart()">Try again</button>
         </div>
-        <p id="no"></p>
+
 
     <script>
         var score = 0;
         var qn = 0;
+        document.getElementById("restart").disabled = true;
         const questions = ["Have you got shit to do tomorrow before noon?","Will you get enough sleep if you smoke up now/soon?","Do you feel unsure about smoking up tonight?"];
         document.getElementById("current question").innerHTML=questions[qn];
         function record(a){
@@ -34,20 +37,28 @@
             document.getElementById("current question").innerHTML=questions[qn];
             }
             if(qn==3){
+                document.getElementById("restart").disabled = false;
                 if(score==1){
                 document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms suggest reconsidering smoking tonight";
-                }
-                else if(score>2){
-                document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms <b>strongly advise you against</b> smoking weed tonight.";
                 }
                 else if(score==2){
                 document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms recommend that you do not smoke weed tonight.";
                 }
+                else if(score>2){
+                document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms <b>strongly advise you against</b> smoking weed tonight.";
+                }
                 else if(qn==3){
-                    document.getElementById("no").innerHTML="Yea you'll probably be fine*";
+                document.getElementById("no").innerHTML="Yea you'll probably be fine*";
                 }
             }
         } 
+        function restart(){
+            document.getElementById("current question").innerHTML=questions[0];
+            document.getElementById("no").innerHTML="";
+            document.getElementById("restart").disabled = true;
+            qn = 0;
+            score = 0;
+        }
 
         
     </script>
