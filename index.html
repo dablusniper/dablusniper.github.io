@@ -15,9 +15,9 @@
         <h1>Should I Smoke Weed Tonight?</h1>
         <h3 id="current question"></h3>
         <div class="wrapper">
-            <button onclick="record(true)">Yes</button>
-            <button onclick="record(false)">No</button>
-            <p id="no">  </p>
+            <button id="yes" onclick="record(true)">Yes</button>
+            <button is="no" onclick="record(false)">No</button>
+            <p id="response">  </p>
             <button id="restart" onclick="restart()">Try again</button>
         </div>
 
@@ -25,39 +25,48 @@
     <script>
         var score = 0;
         var qn = 0;
+        var lock = false;
         document.getElementById("restart").disabled = true;
-        const questions = ["Have you got shit to do tomorrow before noon?","Will you get enough sleep if you smoke up now/soon?","Do you feel unsure about smoking up tonight?"];
+        const questions = ["Do you feel like smoking weed tonight?","Have you got shit to do tomorrow before noon?","Will you get enough sleep if you smoke up now/soon?","Do you feel unsure about smoking up tonight?"];
         document.getElementById("current question").innerHTML=questions[qn];
         function record(a){
-            if(qn==0 && a==true || qn==1 && a==false || qn==2 && a==true){
+            if(qn==0 && a==false){
+                document.getElementById("response").innerHTML="Then what the f*ck are you doing here? <b>Don't smoke any weed tonight.</b>";
+                document.getElementById("restart").disabled = false;
+                lock = true;
+            }
+            if(qn==1 && a==true || qn==2 && a==false || qn==3 && a==true){
                 score = score + qn+1;
             }
-            qn = qn + 1;
-            if(qn<3){
+            if(!lock){
+                qn = qn + 1;
+            }
+            if(qn<4){
             document.getElementById("current question").innerHTML=questions[qn];
             }
-            if(qn==3){
+            if(qn==4){
                 document.getElementById("restart").disabled = false;
                 if(score==1){
-                document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms suggest reconsidering smoking tonight";
+                document.getElementById("response").innerHTML="Based on your responses, our advanced machine learning algorithms suggest reconsidering smoking tonight";
                 }
                 else if(score==2){
-                document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms recommend that you do not smoke weed tonight.";
+                document.getElementById("response").innerHTML="Based on your responses, our advanced machine learning algorithms recommend that you do not smoke weed tonight.";
                 }
                 else if(score>2){
-                document.getElementById("no").innerHTML="Based on your responses, our advanced machine learning algorithms <b>strongly advise you against</b> smoking weed tonight.";
+                document.getElementById("response").innerHTML="Based on your responses, our advanced machine learning algorithms <b>strongly advise you against</b> smoking weed tonight.";
                 }
-                else if(qn==3){
-                document.getElementById("no").innerHTML="Yea you'll probably be fine*";
+                else{
+                document.getElementById("response").innerHTML="Yea you'll probably be fine*";
                 }
             }
         } 
         function restart(){
             document.getElementById("current question").innerHTML=questions[0];
-            document.getElementById("no").innerHTML="";
-            document.getElementById("restart").disabled = true;
+            document.getElementById("response").innerHTML="";
+            document.getElementById("restart").disabled = true;          
             qn = 0;
             score = 0;
+            lock = false;
         }
 
         
